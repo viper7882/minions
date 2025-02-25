@@ -159,5 +159,5 @@ To run Minion/Minions in a notebook, checkout `minion.ipynb`.
 ## Maintainers
 
 - Avanika Narayan (contact: avanika@cs.stanford.edu)
-- Dan Biderman (contact: biderman@cs.stanford.edu)
+- Dan Biderman (contact: biderman@stanford.edu)
 - Sabri Eyuboglu (contact: eyuboglu@cs.stanford.edu)
