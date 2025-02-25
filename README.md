@@ -1,4 +1,4 @@
-![Minions Logo](assets/minions_logo_dark.png)
+![Minions Logo](assets/Ollama_minionS_background.png)
 
 # Where On-Device and Cloud LLMs Meet
 
