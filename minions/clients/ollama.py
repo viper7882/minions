@@ -10,15 +10,16 @@ from minions.usage import Usage
 class OllamaClient:
     def __init__(
         self,
-        model_name: str = "llama-3.2",
+        model: str = "llama-3.2",
         temperature: float = 0.0,
         max_tokens: int = 2048,
         num_ctx: int = 4096,
         structured_output_schema: Optional[BaseModel] = None,
         use_async: bool = False,
+        base_url: Optional[str] = None,
     ):
         """Initialize Ollama Client."""
-        self.model_name = model_name
+        self.model_name = model
         self.logger = logging.getLogger("OllamaClient")
         self.logger.setLevel(logging.INFO)
 
@@ -26,6 +27,7 @@ class OllamaClient:
         self.max_tokens = max_tokens
         self.num_ctx = num_ctx
         self.use_async = use_async
+        self.base_url = base_url
 
         # If we want structured schema output:
         self.format_structured_output = None
@@ -33,8 +35,8 @@ class OllamaClient:
             self.format_structured_output = structured_output_schema.model_json_schema()
 
         # For async calls
-        from ollama import AsyncClient
-        self.client = AsyncClient() if use_async else None
+        from ollama import AsyncClient, Client
+        self.client = AsyncClient(host=self.base_url) if use_async else Client(host=self.base_url)
 
         # Ensure model is pulled
         self._ensure_model_available()
@@ -117,7 +119,7 @@ class OllamaClient:
                 **kwargs
             )
             return resp
-        
+
         # Run them all in parallel
         results = await asyncio.gather(*(process_one(m) for m in messages))
 
@@ -181,7 +183,7 @@ class OllamaClient:
             raise
 
         return responses, usage_total, done_reasons
-    
+
     def chat(
         self,
         messages: Union[List[Dict[str, Any]], Dict[str, Any]],

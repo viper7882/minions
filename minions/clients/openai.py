@@ -10,26 +10,28 @@ from minions.usage import Usage
 class OpenAIClient:
     def __init__(
         self,
-        model_name: str = "gpt-4o",
+        model: str = "gpt-4o",
         api_key: Optional[str] = None,
         temperature: float = 0.0,
         max_tokens: int = 4096,
+        base_url: Optional[str] = None,
     ):
         """
         Initialize the OpenAI client.
 
         Args:
-            model_name: The name of the model to use (default: "gpt-4o")
+            model: The name of the model to use (default: "gpt-4o")
             api_key: OpenAI API key (optional, falls back to environment variable if not provided)
             temperature: Sampling temperature (default: 0.0)
             max_tokens: Maximum number of tokens to generate (default: 4096)
         """
-        self.model_name = model_name
+        self.model_name = model
         openai.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.logger = logging.getLogger("OpenAIClient")
         self.logger.setLevel(logging.INFO)
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.base_url = base_url
 
     def chat(self, messages: List[Dict[str, Any]], **kwargs) -> Tuple[List[str], Usage]:
         """
